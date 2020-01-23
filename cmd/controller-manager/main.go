@@ -10,7 +10,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/enmasseproject/enmasse/pkg/logs"
-	"k8s.io/apimachinery/pkg/runtime"
 	"os"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 
@@ -48,13 +47,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	serverClient, err := client.New(cfg, client.Options{})
 	ctx := context.TODO()
-	// ENV Var for installing the monitoring resources
+	serverClient, err := client.New(cfg, client.Options{})
+
 	monitoring := os.Getenv("ENABLE_MONITORING")
 	if monitoring == "true" {
-		_, _ = installMonitoring(ctx, serverClient)
-		print("finish")
+		err = installMonitoring(ctx, serverClient)
+		if err != nil {
+			fmt.Print(err)
+		}
 	}
 
 	mgr, err := manager.New(cfg, manager.Options{
@@ -133,21 +134,21 @@ func main() {
 	}
 }
 
-func installMonitoring(ctx context.Context, client client.Client) (runtime.Object, error) {
+func installMonitoring(ctx context.Context, client client.Client) error {
 	templateHelper := NewTemplateHelper()
+
 	for _, template := range templateHelper.TemplateList {
 		resource, err := templateHelper.CreateResource(template)
 		if err != nil {
-			return nil, fmt.Errorf("createResource failed: %w", err)
+			return fmt.Errorf("createResource failed: %w", err)
 		}
-
 		err = client.Create(ctx, resource)
 		if err != nil {
 			if !kerrors.IsAlreadyExists(err) {
-				return nil, fmt.Errorf("error creating resource: %w", err)
+				return fmt.Errorf("error creating resource: %w", err)
 			}
 		}
 	}
 
-	return nil, fmt.Errorf("error creating resource")
+	return nil
 }

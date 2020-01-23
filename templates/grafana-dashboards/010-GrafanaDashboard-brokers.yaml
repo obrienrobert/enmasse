@@ -5,6 +5,7 @@ metadata:
     app: enmasse
     monitoring-key: middleware
   name: enmasse-brokers
+  namespace: enmasse-infra
 spec:
   name: enmasse-brokers.json
   json: |

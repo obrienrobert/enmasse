@@ -30,7 +30,7 @@ func NewTemplateHelper() *TemplateHelper {
 
 	templatePath := "./templates/" // Deployments
 	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
-		templatePath = "../templates/prometheus-rules" // Local
+		templatePath = "../templates/build/enmasse-latest/install/bundles/monitoring" // Local
 		if _, err := os.Stat(templatePath); os.IsNotExist(err) {
 			panic("cannot find templates")
 		}
@@ -45,6 +45,11 @@ func NewTemplateHelper() *TemplateHelper {
 func GetTemplateList() []string {
 	templateList := []string{
 		"010-PrometheusRules-kube-metrics.yaml",
+		"010-PrometheusRules-enmasse.yaml",
+		"010-ServiceMonitor-enmasse.yaml",
+		"010-GrafanaDashboard-brokers.yaml",
+		"010-GrafanaDashboard-components.yaml", // error
+		"010-GrafanaDashboard-routers.yaml",
 	}
 	return templateList
 }
@@ -77,7 +82,6 @@ func (h *TemplateHelper) loadTemplate(name string) ([]byte, error) {
 func (h *TemplateHelper) CreateResource(template string) (runtime.Object, error) {
 	tpl, err := h.loadTemplate(template)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 
