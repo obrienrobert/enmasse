@@ -6,10 +6,13 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"os"
-
+	"fmt"
 	"github.com/enmasseproject/enmasse/pkg/logs"
+	"k8s.io/apimachinery/pkg/runtime"
+	"os"
+	"sigs.k8s.io/controller-runtime/pkg/client/config"
 
 	"github.com/openshift/api"
 
@@ -18,9 +21,10 @@ import (
 
 	"github.com/enmasseproject/enmasse/pkg/cache"
 	"github.com/enmasseproject/enmasse/pkg/controller"
+	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
-	"sigs.k8s.io/controller-runtime/pkg/client/config"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 	"sigs.k8s.io/controller-runtime/pkg/runtime/signals"
@@ -42,6 +46,15 @@ func main() {
 	if err != nil {
 		log.Error(err, "Failed to get configuration")
 		os.Exit(1)
+	}
+
+	serverClient, err := client.New(cfg, client.Options{})
+	ctx := context.TODO()
+	// ENV Var for installing the monitoring resources
+	monitoring := os.Getenv("ENABLE_MONITORING")
+	if monitoring == "true" {
+		_, _ = installMonitoring(ctx, serverClient)
+		print("finish")
 	}
 
 	mgr, err := manager.New(cfg, manager.Options{
@@ -118,4 +131,23 @@ func main() {
 		log.Error(err, "manager exited non-zero")
 		os.Exit(1)
 	}
+}
+
+func installMonitoring(ctx context.Context, client client.Client) (runtime.Object, error) {
+	templateHelper := NewTemplateHelper()
+	for _, template := range templateHelper.TemplateList {
+		resource, err := templateHelper.CreateResource(template)
+		if err != nil {
+			return nil, fmt.Errorf("createResource failed: %w", err)
+		}
+
+		err = client.Create(ctx, resource)
+		if err != nil {
+			if !kerrors.IsAlreadyExists(err) {
+				return nil, fmt.Errorf("error creating resource: %w", err)
+			}
+		}
+	}
+
+	return nil, fmt.Errorf("error creating resource")
 }

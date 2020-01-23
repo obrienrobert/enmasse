@@ -29,94 +29,96 @@ spec:
                       - "true"
       serviceAccountName: enmasse-operator
       containers:
-      - name: controller
-        image: ${CONTROLLER_MANAGER_IMAGE}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
-        resources:
-          limits:
-            memory: 512Mi
-          requests:
-            memory: 512Mi
-        env:
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: OPERATOR_NAME
-          value: "enmasse-operator"
-        - name: IMAGE_PULL_POLICY
-          value: "${IMAGE_PULL_POLICY}"
-        - name: CONTROLLER_DISABLE_ALL
-          value: "true"
-        - name: CONTROLLER_ENABLE_UPGRADER
-          value: "true"
-        - name: CONTROLLER_ENABLE_IOT_CONFIG
-          value: "true"
-        - name: CONTROLLER_ENABLE_AUTHENTICATION_SERVICE
-          value: "true"
-        - name: CONTROLLER_ENABLE_ADDRESS_SPACE_CONTROLLER
-          value: "true"
-        - name: CONTROLLER_ENABLE_MESSAGING_USER
-          value: "true"
-        - name: ADDRESS_SPACE_CONTROLLER_IMAGE
-          value: ${ADDRESS_SPACE_CONTROLLER_IMAGE}
-        - name: CONTROLLER_MANAGER_IMAGE
-          value: ${CONTROLLER_MANAGER_IMAGE}
-        - name: IOT_AUTH_SERVICE_IMAGE
-          value: ${IOT_AUTH_SERVICE_IMAGE}
-        - name: IOT_DEVICE_REGISTRY_FILE_IMAGE
-          value: ${IOT_DEVICE_REGISTRY_FILE_IMAGE}
-        - name: IOT_DEVICE_REGISTRY_INFINISPAN_IMAGE
-          value: ${IOT_DEVICE_REGISTRY_INFINISPAN_IMAGE}
-        - name: IOT_GC_IMAGE
-          value: ${IOT_GC_IMAGE}
-        - name: IOT_HTTP_ADAPTER_IMAGE
-          value: ${IOT_HTTP_ADAPTER_IMAGE}
-        - name: IOT_MQTT_ADAPTER_IMAGE
-          value: ${IOT_MQTT_ADAPTER_IMAGE}
-        - name: IOT_LORAWAN_ADAPTER_IMAGE
-          value: ${IOT_LORAWAN_ADAPTER_IMAGE}
-        - name: IOT_SIGFOX_ADAPTER_IMAGE
-          value: ${IOT_SIGFOX_ADAPTER_IMAGE}
-        - name: IOT_TENANT_CLEANER_IMAGE
-          value: ${IOT_TENANT_CLEANER_IMAGE}
-        - name: IOT_TENANT_SERVICE_IMAGE
-          value: ${IOT_TENANT_SERVICE_IMAGE}
-        - name: IOT_PROXY_CONFIGURATOR_IMAGE
-          value: ${IOT_PROXY_CONFIGURATOR_IMAGE}
-        - name: ROUTER_IMAGE
-          value: ${ROUTER_IMAGE}
-        - name: STANDARD_CONTROLLER_IMAGE
-          value: ${STANDARD_CONTROLLER_IMAGE}
-        - name: AGENT_IMAGE
-          value: ${AGENT_IMAGE}
-        - name: BROKER_IMAGE
-          value: ${BROKER_IMAGE}
-        - name: BROKER_PLUGIN_IMAGE
-          value: ${BROKER_PLUGIN_IMAGE}
-        - name: TOPIC_FORWARDER_IMAGE
-          value: ${TOPIC_FORWARDER_IMAGE}
-        - name: MQTT_GATEWAY_IMAGE
-          value: ${MQTT_GATEWAY_IMAGE}
-        - name: MQTT_LWT_IMAGE
-          value: ${MQTT_LWT_IMAGE}
-        - name: NONE_AUTHSERVICE_IMAGE
-          value: ${NONE_AUTHSERVICE_IMAGE}
-        - name: KEYCLOAK_IMAGE
-          value: ${KEYCLOAK_IMAGE}
-        - name: KEYCLOAK_PLUGIN_IMAGE
-          value: ${KEYCLOAK_PLUGIN_IMAGE}
-        - name: CONTROLLER_ENABLE_CONSOLE_SERVICE
-          value: "true"
-        - name: CONSOLE_INIT_IMAGE
-          value: "${CONSOLE_INIT_IMAGE}"
-        - name: CONSOLE_PROXY_OPENSHIFT_IMAGE
-          value: "${CONSOLE_PROXY_OPENSHIFT_IMAGE}"
-        - name: CONSOLE_PROXY_KUBERNETES_IMAGE
-          value: "${CONSOLE_PROXY_KUBERNETES_IMAGE}"
-        - name: CONSOLE_HTTPD_IMAGE
-          value: "${CONSOLE_HTTPD_IMAGE}"
+        - name: controller
+          image: ${CONTROLLER_MANAGER_IMAGE}
+          imagePullPolicy: ${IMAGE_PULL_POLICY}
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              memory: 512Mi
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: OPERATOR_NAME
+              value: "enmasse-operator"
+            - name: IMAGE_PULL_POLICY
+              value: "${IMAGE_PULL_POLICY}"
+            - name: CONTROLLER_DISABLE_ALL
+              value: "true"
+            - name: CONTROLLER_ENABLE_UPGRADER
+              value: "true"
+            - name: CONTROLLER_ENABLE_IOT_CONFIG
+              value: "true"
+            - name: CONTROLLER_ENABLE_AUTHENTICATION_SERVICE
+              value: "true"
+            - name: CONTROLLER_ENABLE_ADDRESS_SPACE_CONTROLLER
+              value: "true"
+            - name: CONTROLLER_ENABLE_MESSAGING_USER
+              value: "true"
+            - name: ADDRESS_SPACE_CONTROLLER_IMAGE
+              value: ${ADDRESS_SPACE_CONTROLLER_IMAGE}
+            - name: CONTROLLER_MANAGER_IMAGE
+              value: ${CONTROLLER_MANAGER_IMAGE}
+            - name: IOT_AUTH_SERVICE_IMAGE
+              value: ${IOT_AUTH_SERVICE_IMAGE}
+            - name: IOT_DEVICE_REGISTRY_FILE_IMAGE
+              value: ${IOT_DEVICE_REGISTRY_FILE_IMAGE}
+            - name: IOT_DEVICE_REGISTRY_INFINISPAN_IMAGE
+              value: ${IOT_DEVICE_REGISTRY_INFINISPAN_IMAGE}
+            - name: IOT_GC_IMAGE
+              value: ${IOT_GC_IMAGE}
+            - name: IOT_HTTP_ADAPTER_IMAGE
+              value: ${IOT_HTTP_ADAPTER_IMAGE}
+            - name: IOT_MQTT_ADAPTER_IMAGE
+              value: ${IOT_MQTT_ADAPTER_IMAGE}
+            - name: IOT_LORAWAN_ADAPTER_IMAGE
+              value: ${IOT_LORAWAN_ADAPTER_IMAGE}
+            - name: IOT_SIGFOX_ADAPTER_IMAGE
+              value: ${IOT_SIGFOX_ADAPTER_IMAGE}
+            - name: IOT_TENANT_CLEANER_IMAGE
+              value: ${IOT_TENANT_CLEANER_IMAGE}
+            - name: IOT_TENANT_SERVICE_IMAGE
+              value: ${IOT_TENANT_SERVICE_IMAGE}
+            - name: IOT_PROXY_CONFIGURATOR_IMAGE
+              value: ${IOT_PROXY_CONFIGURATOR_IMAGE}
+            - name: ROUTER_IMAGE
+              value: ${ROUTER_IMAGE}
+            - name: STANDARD_CONTROLLER_IMAGE
+              value: ${STANDARD_CONTROLLER_IMAGE}
+            - name: AGENT_IMAGE
+              value: ${AGENT_IMAGE}
+            - name: BROKER_IMAGE
+              value: ${BROKER_IMAGE}
+            - name: BROKER_PLUGIN_IMAGE
+              value: ${BROKER_PLUGIN_IMAGE}
+            - name: TOPIC_FORWARDER_IMAGE
+              value: ${TOPIC_FORWARDER_IMAGE}
+            - name: MQTT_GATEWAY_IMAGE
+              value: ${MQTT_GATEWAY_IMAGE}
+            - name: MQTT_LWT_IMAGE
+              value: ${MQTT_LWT_IMAGE}
+            - name: NONE_AUTHSERVICE_IMAGE
+              value: ${NONE_AUTHSERVICE_IMAGE}
+            - name: KEYCLOAK_IMAGE
+              value: ${KEYCLOAK_IMAGE}
+            - name: KEYCLOAK_PLUGIN_IMAGE
+              value: ${KEYCLOAK_PLUGIN_IMAGE}
+            - name: CONTROLLER_ENABLE_CONSOLE_SERVICE
+              value: "true"
+            - name: CONSOLE_INIT_IMAGE
+              value: "${CONSOLE_INIT_IMAGE}"
+            - name: CONSOLE_PROXY_OPENSHIFT_IMAGE
+              value: "${CONSOLE_PROXY_OPENSHIFT_IMAGE}"
+            - name: CONSOLE_PROXY_KUBERNETES_IMAGE
+              value: "${CONSOLE_PROXY_KUBERNETES_IMAGE}"
+            - name: CONSOLE_HTTPD_IMAGE
+              value: "${CONSOLE_HTTPD_IMAGE}"
+            - name: ENABLE_MONITORING
+              value: "true"
