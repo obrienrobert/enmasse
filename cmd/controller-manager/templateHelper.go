@@ -48,7 +48,7 @@ func GetTemplateList() []string {
 		"010-PrometheusRules-enmasse.yaml",
 		"010-ServiceMonitor-enmasse.yaml",
 		"010-GrafanaDashboard-brokers.yaml",
-		"010-GrafanaDashboard-components.yaml", // error
+		"010-GrafanaDashboard-components.yaml",
 		"010-GrafanaDashboard-routers.yaml",
 	}
 	return templateList
