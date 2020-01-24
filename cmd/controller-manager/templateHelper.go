@@ -16,7 +16,12 @@ import (
 	"text/template"
 )
 
+type Parameters struct {
+	Params map[string]string
+}
+
 type TemplateHelper struct {
+	Parameters   Parameters
 	TemplatePath string
 	TemplateList []string
 }
@@ -24,9 +29,13 @@ type TemplateHelper struct {
 // Creates a new templates helper and populates the values for all
 // templates properties. Some of them (like the hostname) are set
 // by the user in the custom resource
-func NewTemplateHelper() *TemplateHelper {
+func NewTemplateHelper(extraParams map[string]string) *TemplateHelper {
 
 	log.Info("Installing Monitoring Resources")
+
+	params := Parameters{
+		Params: extraParams,
+	}
 
 	templatePath := "./templates/" // Deployments
 	if _, err := os.Stat(templatePath); os.IsNotExist(err) {
@@ -39,6 +48,7 @@ func NewTemplateHelper() *TemplateHelper {
 	return &TemplateHelper{
 		TemplatePath: templatePath,
 		TemplateList: GetTemplateList(),
+		Parameters:   params,
 	}
 }
 
@@ -71,7 +81,7 @@ func (h *TemplateHelper) loadTemplate(name string) ([]byte, error) {
 	}
 
 	var buffer bytes.Buffer
-	err = parsed.Execute(&buffer, nil)
+	err = parsed.Execute(&buffer, h.Parameters)
 	if err != nil {
 		return nil, err
 	}

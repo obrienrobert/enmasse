@@ -135,7 +135,10 @@ func main() {
 }
 
 func installMonitoring(ctx context.Context, client client.Client) error {
-	templateHelper := NewTemplateHelper()
+	params := map[string]string{}
+    params["Namespace"] = os.Getenv("NAMESPACE")
+
+	templateHelper := NewTemplateHelper(params)
 
 	for _, template := range templateHelper.TemplateList {
 		resource, err := templateHelper.CreateResource(template)

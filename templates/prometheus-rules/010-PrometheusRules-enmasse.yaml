@@ -6,7 +6,7 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: enmasse
-  namespace: enmasse-infra
+  namespace: {{ index .Params "Namespace" }}
 spec:
   groups:
   - name: ComponentHealth
@@ -22,7 +22,7 @@ spec:
 
     - alert: ComponentHealth
       annotations:
-        description: "{{ "{{" }} $labels.pod {{ "}}" }} has been down for over 5 minutes"
+        description: "{{ "{{" }} $labels.job {{ "}}" }} has been down for over 5 minutes"
         severity: critical
       expr: enmasse_component_health == 0
       for: 300s
